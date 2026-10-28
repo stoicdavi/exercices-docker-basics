@@ -13,6 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         script:
+          - test_docker_run_parse.sh
           - test_1_07_curler.sh
           - test_1_08_web_server.sh
           - test_1_09_bind_mount_log.sh
