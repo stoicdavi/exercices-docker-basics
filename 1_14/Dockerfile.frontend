@@ -4,4 +4,6 @@ FROM ubuntu:24.04
 COPY 1_12 .
 ENV REACT_APP_BACKEND_URL=/api
 
+EXPOSE 5001
+
 CMD ["serve", "-s", "build", "-l", "5001"]
