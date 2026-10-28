@@ -35,7 +35,7 @@ _docker_run_is_value_flag() {
 # just "8080"), taken only if it appeared strictly before the image name --
 # one placed after is correctly ignored, matching real docker.
 docker_run_parse() {
-  local line="$1"
+  local line="$1" output="${2:-summary}"
   local rest
   rest="$(echo "$line" | sed -E 's/^.*docker[[:space:]]+run[[:space:]]*//')"
 
@@ -43,7 +43,7 @@ docker_run_parse() {
   read -r -a toks <<< "$rest"
 
   local image="" port="" publish_all=0
-  local i=0 tok flagname flagvalue skip_next=0
+  local i=0 tok flagname flagvalue envvalue skip_next=0
   while [ "$i" -lt "${#toks[@]}" ]; do
     tok="${toks[$i]}"
     if [ "$skip_next" -eq 1 ]; then
@@ -72,6 +72,13 @@ docker_run_parse() {
           fi
         elif [ "$flagname" = "-P" ] || [ "$flagname" = "--publish-all" ]; then
           publish_all=1
+        elif [ "$output" = "env" ] && { [ "$flagname" = "-e" ] || [ "$flagname" = "--env" ]; }; then
+          envvalue="$flagvalue"
+          if [[ "$tok" != *=* ]]; then
+            envvalue="${toks[$((i + 1))]}"
+            envvalue="$(echo "$envvalue" | sed -E 's/^"(.*)"$/\1/; s/^'"'"'(.*)'"'"'$/\1/')"
+          fi
+          printf '%s\n' "$envvalue"
         fi
 
         if [ -z "$flagvalue" ] && _docker_run_is_value_flag "$flagname"; then
@@ -86,5 +93,12 @@ docker_run_parse() {
     i=$((i + 1))
   done
 
-  printf '%s\t%s\t%s\n' "$image" "$port" "$publish_all"
+  if [ "$output" = "summary" ]; then
+    printf '%s\t%s\t%s\n' "$image" "$port" "$publish_all"
+  fi
+}
+
+# Emits environment flags before the image, one value per line.
+docker_run_env_flags() {
+  docker_run_parse "$1" env
 }
