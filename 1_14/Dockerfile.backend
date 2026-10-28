@@ -3,7 +3,7 @@ FROM golang:1.27.3
 
 ENV PORT=8080
 
-ENV REQUEST_ORIGIN=https://example.com
+ENV REQUEST_ORIGIN=http://localhost:5001
 
 ENV REDIS_HOST=6379
 
