@@ -1,12 +1,17 @@
 # use here COPY 1_13 .
 FROM golang:1.27.3
 
+WORKDIR /src/usr/app
+
 ENV PORT=8080
+COPY 1_13 .
 
 ENV REQUEST_ORIGIN=http://localhost:5001
 
-ENV REDIS_HOST=6379
+RUN go build -o server
 
-ENV POSTGRES_HOST=5432 POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres POSTGRES_DATABASE=postgres
+ENV REDIS_PORT=6379
 
-COPY 1_13 .
+EXPOSE 8080
+
+CMD ["./server"]
