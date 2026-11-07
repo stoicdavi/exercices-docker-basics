@@ -21,6 +21,6 @@ This repository contains hands-on exercises for learning the fundamentals of Doc
 
 - Install Docker Engine or Docker Desktop and make sure the Docker CLI is available.
 - Work through the numbered exercise folders in order, following the instructions for the associated course exercises.
-- Each folder contains the files relevant to that task, such as Dockerfiles, source code, or command notes. The `tests/` directory contains checks for several exercises.
+- Each folder contains the files relevant to that task, such as Dockerfiles, source code, or command notes. The `tests/` directory contains checks for several exercises i did
 
-Some later exercises use additional tools or runtimes, including Java, Node.js, and Go. Check the README in an exercise folder for project-specific setup instructions.
+Dockerfile.frontend is used to build an image i used for exercise the docker compose exercise 2_03-10 https://github.com/stoicdavi/exercises-docker-compose/blob/main/tests/test_2_09_project_nginx.sh
